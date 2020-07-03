@@ -1,25 +1,25 @@
-from flask import Flask, Blueprint
+from flask import Flask
 from app.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_restx import Api
 
-app = Flask(__name__)
-app.config.from_object(Config)
+db = SQLAlchemy()
+migrate = Migrate()
 
-# API
-api = Api(version='1.0', title='Predictor API',
-          description='Discount Predictor')
-api_bp = Blueprint('api', __name__, url_prefix='/api')
-api.init_app(api_bp)
-app.register_blueprint(api_bp)
+def create_app(config_class=Config):
 
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+    
+    db.init_app(app)
+    migrate.init_app(app, db=db)
+    
+    from app.rest import bp as api_bp
+    app.register_blueprint(api_bp, url_prefix='/api')
 
-# frontend
-bp = Blueprint('frontend', __name__)
-app.register_blueprint(bp)
+    from app.frontend import bp as frontend_bp
+    app.register_blueprint(frontend_bp)
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+    return app
 
-from app import models, routes
+# from app import models
