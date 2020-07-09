@@ -14,8 +14,8 @@ class Predict(Resource):
         """
             Make the best prediction ;)
         """
-        predict(api.payload)
-        return api.payload, 201
+        prediction = predict(api.payload)
+        return prediction, 201
 
 
 @api.route('/current_model')
@@ -24,15 +24,16 @@ class CurrentModel(Resource):
        Model that currently in use
     """
 
-    # @api.marshal_with(model_info_dto)
+    @api.marshal_with(model_info_dto)
     @api.expect(model_input_dto)
     def put(self, **kwargs):
         """
             Change current model
         """
         print(api.payload)
+        cur_model = set_current_model(api.payload['modelId'])
 
-        return set_current_model(api.payload['modelId']), 200
+        return cur_model, 200
 
     @api.marshal_with(model_info_dto)
     def get(self, **kwargs):
