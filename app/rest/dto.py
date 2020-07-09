@@ -4,7 +4,8 @@ from app.rest import api
 shopping_cart_row_dto = api.model('Shopping Cart Row', {
     'productId': fields.String(example='855109'),
     'quantity': fields.Integer(example='5', default=0),
-    'amount': fields.Float(example='20', default=0)
+    'amount': fields.Float(example='20', default=0),
+    'prediction': fields.Float(example='20')
 })
 
 shopping_cart_dto = api.model('Shopping Cart', {
