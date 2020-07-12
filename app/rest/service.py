@@ -21,7 +21,6 @@ def predict(shopping_cart):
 
     # Get DataFrame
     df = connector.get_data(shopping_cart_id)
-    print(df.shape)
 
     # Preprocess
     dp = DataPreprocessor()
@@ -93,8 +92,6 @@ def set_current_model(model_id):
     connector = BigQueryConnector()
     model_data = connector.get_model(model_id)
 
-    print(model_data.keys())
-
     # Store binaries to file system
     path = get_model_filename('model', model_data['model_id'])
     dirname = os.path.dirname(path)
@@ -107,7 +104,8 @@ def set_current_model(model_id):
     current_model = db.session.query(CurrentModel).first()
     if current_model is None:
         current_model = CurrentModel()
-        current_model.from_dict(model_data)
+
+    current_model.from_dict(model_data)
 
     db.session.add(current_model)
     db.session.commit()

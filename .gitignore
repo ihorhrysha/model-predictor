@@ -73,3 +73,5 @@ ENV/
 
 test.py
 *.cred.json
+
+.vscode/

@@ -30,7 +30,6 @@ class CurrentModel(Resource):
         """
             Change current model
         """
-        print(api.payload)
         cur_model = set_current_model(api.payload['modelId'])
 
         return cur_model, 200
